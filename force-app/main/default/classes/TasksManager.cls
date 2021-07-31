@@ -1,19 +1,26 @@
 public with sharing class TasksManager {
-    public TasksManager() {
-    }
 
     @InvocableMethod
-    public static void AssignTasks(List<Id> accId){
+    public static void assignTasks(List<Id> accountIds){
         
-        List<Task> tasksOfAccount = [SELECT OwnerId FROM Task WHERE WhatId = :accId[0]];
+        List<Task> tasksForAccount = [SELECT OwnerId, WhatId FROM Task WHERE WhatId = :accountIds];
+        User userForTasks = [SELECT Id FROM User WHERE IsActive = true LIMIT 1];
+        Map<Id, Integer> taskMap = new Map<Id, Integer>();
 
-        if (tasksOfAccount.size() >= 3){
-        User userForTask = [SELECT Id FROM User WHERE IsActive = true LIMIT 1];
-        for (Task task: tasksOfAccount)
-        {
-            task.OwnerId = userForTask.Id;
+        for(Task task : tasksForAccount){
+            if(taskMap.containsKey(task.WhatId)){
+                taskMap.put(task.WhatId, taskMap.get(task.WhatId) + 1);
+            } else {
+                taskMap.put(task.WhatId, 1);
+            }
         }
-        update tasksOfAccount;
-        }
+
+        for (Task task : tasksForAccount){
+            if (taskMap.get(task.WhatId) > 2){
+                task.OwnerId = userForTasks.Id;
+            }
+        }   
+
+        update tasksForAccount;
     }
 }

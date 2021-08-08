@@ -18,7 +18,6 @@ global with sharing class AccountTriggerHandler {
 
     public static void handleAfterUpdate(List<Account> newList, Map<Id, Account> newMap, List<Account> oldList, Map<Id, Account> oldMap){
         AccountHelper.assingTask(newList);
-        AccountHelper.flagForSingelton = false;
     } 
 
     public static void handleAfterDelete(List<Account> oldList, Map<Id, Account> oldMap){

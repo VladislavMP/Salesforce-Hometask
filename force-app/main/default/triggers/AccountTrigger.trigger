@@ -18,14 +18,13 @@ trigger AccountTrigger on Account (
         if (Trigger.isBefore && Trigger.isDelete){
             AccountTriggerHandler.handleBeforeDelete(Trigger.old, Trigger.oldMap);
         }
-
+        
         if (Trigger.isAfter && Trigger.isInsert){
             AccountTriggerHandler.handleAfterInsert(Trigger.new, Trigger.newMap);
         }
 
         if (Trigger.isAfter && Trigger.isUpdate){
             AccountTriggerHandler.handleAfterUpdate(Trigger.new, Trigger.newMap, Trigger.old, Trigger.oldMap);
-            AccountHelper.flagForSingelton = false;
         }
 
         if (Trigger.isAfter && Trigger.isDelete){

@@ -15,7 +15,7 @@ public with sharing class ContactManager implements Queueable {
         update contacts;
     }
 
-    public static void updateContacts(List<Id> newAccountsIds){
+ /*   public static void updateContacts(List<Id> newAccountsIds){
         List<Contact> contacts = [SELECT IsSynced__c, ProcessedByFuture__c FROM Contact WHERE AccountId =: newAccountsIds];
         for (Contact contact : contacts){
             contact.IsSynced__c = false;
@@ -23,6 +23,6 @@ public with sharing class ContactManager implements Queueable {
         }
         
         update contacts;
-    }
+    }*/
 
 }

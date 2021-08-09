@@ -5,20 +5,17 @@ public with sharing class TasksUpdateBatch implements Database.Batchable<SObject
     }
 
     public void execute(Database.BatchableContext context, List<Task> tasks){
-        List<Id> accountIds = new List<Id>();
+        Set<Id> accountIds = new Set<Id>();
         for (Task task : tasks){
-            if (!accountIds.contains(task.WhatId)){
-                accountIds.add(task.WhatId);
-            }
+            accountIds.add(task.WhatId);
         }
 
-        Map<Id, Account> accounts = new Map<Id, Account>([SELECT Id, Name, UpdatedByTask__c FROM Account WHERE Id =: accountIds]);
+        Map<Id, Account> accounts = new Map<Id, Account>([SELECT Id, UpdatedByTask__c, Owner.Name FROM Account WHERE Id =: accountIds]);
         for (Task task : tasks){
             task.IsSynced__c = true;
-            task.AccountOwner__c = accounts.get(task.WhatId).Name;
+            task.AccountOwner__c = accounts.get(task.WhatId)?.Owner.Name;
         }
-        for (Account account : accounts.values())
-        {
+        for (Account account : accounts.values()){
             account.UpdatedByTask__c = true;
         }
 

@@ -2,11 +2,13 @@ global with sharing class AccountTriggerHandler {
 
     public static void handleBeforeInsert(List<Account> newList){
         List<Id> accountsIds = new List<Id>();
+        List<String> accountsNames = new List<String>();
         for (Account account : newList){
             accountsIds.add(account.Id);
+            accountsNames.add(account.Name);
         }
 
-        AccountHelper.createTask(accountsIds);
+        AccountHelper.createTask(accountsIds, accountsNames);
     } 
 
     public static void handleBeforeUpdate(List<Account> newList, Map<Id, Account> newMap, List<Account> oldList, Map<Id, Account> oldMap){

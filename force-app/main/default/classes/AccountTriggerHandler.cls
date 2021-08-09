@@ -24,11 +24,14 @@ global with sharing class AccountTriggerHandler {
     } 
 
     public static void handleAfterUpdate(List<Account> newList, Map<Id, Account> newMap, List<Account> oldList, Map<Id, Account> oldMap){
-        AccountHelper.assingTasks(newList);
-        List<Id> accountsIds = new List<Id>();
-        accountsIds = AccountHelper.isBillingAddressChanged(newList, oldMap);
-        //AccountHelper.updateContacts(accountsIds);
-        AccountHelper.updateContactsQueueable(accountsIds);
+        if (AccountHelper.flagForSingleton == true){
+            AccountHelper.flagForSingleton = false;
+            AccountHelper.assingTasks(newList);
+            List<Id> accountsIds = new List<Id>();
+            accountsIds = AccountHelper.isBillingAddressChanged(newList, oldMap);
+            //AccountHelper.updateContacts(accountsIds);
+            AccountHelper.updateContactsQueueable(accountsIds);
+        }
     } 
 
     public static void handleAfterDelete(List<Account> oldList, Map<Id, Account> oldMap){

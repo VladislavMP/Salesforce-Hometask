@@ -1,5 +1,5 @@
 global with sharing class AccountHelper {
-    private static Boolean flagForSingleton = true;
+   public static Boolean flagForSingleton = true;
 
     @future
     public static void createTask(List<Id> accountIds, List<String> accountNames){
@@ -45,9 +45,6 @@ global with sharing class AccountHelper {
     }
 
     public static void assingTasks(List<Account> newAccounts){
-
-        if (flagForSingleton == true){
-            AccountHelper.flagForSingleton = false;
             List<Id> newAccountIds = new List<Id>();
 
             for (Account account : newAccounts){
@@ -55,7 +52,6 @@ global with sharing class AccountHelper {
             }
 
             TasksManager.assignTasks(newAccountIds);
-        }
     }
 
 }
